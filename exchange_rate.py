@@ -1,7 +1,18 @@
 from pprint import pprint
-# Внимание! Библиотеку requests нужно установить, выполните в консоли команду:
-# pip install requests
 import requests
+
+class Currency:
+    def __init__(self, type):
+        self.type = type.upper()
+
+    def __getitem__(self, date):
+        day, month, year = date.split('.')
+        url = f'https://www.cbr-xml-daily.ru/archive/{year}/{month}/{day}/daily_json.js'
+        response = requests.get(url)
+
+        return response.json()['Valute'][self.type]['Value']
+
+
 date = '2021/03/25'
 url = f'https://www.cbr-xml-daily.ru/archive/{date}/daily_json.js'
 # Отправляем запрос на указанный url
